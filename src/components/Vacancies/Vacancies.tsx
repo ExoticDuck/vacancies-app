@@ -2,6 +2,8 @@ import React from 'react'
 
 
 import { SimpleGrid, Skeleton, Container, Stack, useMantineTheme, px, createStyles } from '@mantine/core';
+import { vacanciesAPI } from '../../redux/services/VacanciesService';
+import Form from './Form/Form';
 
 
 const BASE_HEIGHT = 360;
@@ -53,18 +55,20 @@ export function Subgrid() {
   return (
     <Container my="md" className={classes.container}>
       <SimpleGrid cols={2} className={classes.grid}>
-        {getChild(BASE_HEIGHT, 315)}
+        <Form/>
         <Stack>
           {getChild(48, 773)}
           {getChild(668, 773)}
         </Stack>
-        
       </SimpleGrid>
     </Container>
   );
 }
 
 function Vacancies() {
+  const {data, error, isLoading, refetch} = vacanciesAPI.useFetchPasswordQuery('')
+  console.log(data);
+  
   return (
     <div>
         <Subgrid/>
