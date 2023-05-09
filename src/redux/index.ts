@@ -1,16 +1,16 @@
 import { configureStore, combineReducers, ThunkDispatch } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { vacanciesReducer } from './reducers/VacanciesSlice'
-import { vacanciesAPI } from './services/VacanciesService'
+// import { vacanciesAPI } from './services/VacanciesService'
 
 const rootReducer = combineReducers({
     vacancies: vacanciesReducer,
-    [vacanciesAPI.reducerPath]: vacanciesAPI.reducer
+    // [vacanciesAPI.reducerPath]: vacanciesAPI.reducer
 })
 
 export const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(vacanciesAPI.middleware)
+    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(vacanciesAPI.middleware)
 })
 
 // export type AppDispatch = ThunkDispatch<RootStateType,unknown,AppActionType>

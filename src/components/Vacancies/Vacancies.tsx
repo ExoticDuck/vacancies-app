@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 
 import { SimpleGrid, Skeleton, Container, Stack, useMantineTheme, px, createStyles } from '@mantine/core';
-import { vacanciesAPI } from '../../redux/services/VacanciesService';
 import Form from './Form/Form';
+import { useAppDispatch, useAppSelector } from '../../redux';
+import { CataloguesResponseType, fetchCatalogues, fetchToken } from '../../redux/reducers/VacanciesSlice';
 
 
 const BASE_HEIGHT = 360;
@@ -48,14 +49,21 @@ const getSubHeight = (children: number, spacing: number) =>
 
 }));
 
-export function Subgrid() {
+type SubgridPropsType = {
+  catalogues: {
+    title: string
+    key: number
+  }[]
+}
+
+export function Subgrid({catalogues}: SubgridPropsType) {
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const getChild = (height: number, width: number) => <Skeleton height={height} width={width} className={classes.item} radius="md" animate={false} />;
   return (
     <Container my="md" className={classes.container}>
       <SimpleGrid cols={2} className={classes.grid}>
-        <Form/>
+        <Form catalogues={catalogues}/>
         <Stack>
           {getChild(48, 773)}
           {getChild(668, 773)}
@@ -66,12 +74,19 @@ export function Subgrid() {
 }
 
 function Vacancies() {
-  const {data, error, isLoading, refetch} = vacanciesAPI.useFetchPasswordQuery('')
-  console.log(data);
-  
+  // const {data, error, isLoading, refetch} = vacanciesAPI.useFetchPasswordQuery()
+  // const {data: categories, error: err, isLoading : dwf, refetch: refetchCat} = vacanciesAPI.useFetchCategoriesQuery('')
+  // console.log(data);
+  // console.log(categories.map((el: any) => ({tile: el.title, key: el.key})));
+  const dispatch = useAppDispatch()
+  const catalogues = useAppSelector(state => state.vacancies.catalogues.map((el: CataloguesResponseType) => ({title: el.title, key: el.key})))
+  const token = useAppSelector(state => state.vacancies.token)
+  useEffect(() => {
+    dispatch(fetchCatalogues())
+  }, [dispatch, token])
   return (
     <div>
-        <Subgrid/>
+        <Subgrid catalogues={catalogues}/>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
@@ -6,9 +6,15 @@ import Vacancies from './components/Vacancies/Vacancies';
 import Favourites from './components/Favourites/Favourites';
 import { HeaderMenu } from './components/Header/Header';
 import { MantineProvider } from '@mantine/core';
+import { useAppDispatch } from './redux';
+import { fetchToken } from './redux/reducers/VacanciesSlice';
 
 
 function App() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchToken())
+  }, [dispatch])
   const links = [
     {
       link: "/vacancies",
